@@ -1,1 +1,3 @@
 node_modules/
+# mac独自のディレクトリーに関する情報ファイル
+.DS_Store
