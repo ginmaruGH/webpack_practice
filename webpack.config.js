@@ -1,4 +1,7 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { Template } = require("webpack");
 
 module.exports = {
   entry: "./src/index.js",
@@ -6,12 +9,18 @@ module.exports = {
     path: path.resolve(__dirname, "./dist"),
     filename: "main.js",
   },
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
   module: {
     rules: [
       {
         test: /\.css/,
         use: [
-          { loader: "style-loader", },
+          { loader: MiniCssExtractPlugin.loader, },
           {
             loader: "css-loader",
           },
