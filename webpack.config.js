@@ -14,26 +14,44 @@ module.exports = {
       filename: "./stylesheets/[name].css"
     }),
     new HtmlWebpackPlugin({
-      template: "./src/templates/index.html",
+      template: "./src/templates/index.pug",
+      filename: "index.html",
+      inject: "body",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/templates/access.pug",
+      filename: "access.html",
       inject: "body",
     }),
     new CleanWebpackPlugin(),
   ],
   module: {
     rules: [
-      {
-        test: /\.css/,
+      { //--- Styles
+        test: /\.css$/,
         use: [
           { loader: MiniCssExtractPlugin.loader, },
           { loader: "css-loader", },
         ],
       },
-      {
-        test: /\.(png|jpg)/,
+      { //--- Images
+        test: /\.(png|jpg)$/,
         type: "asset/resource",
         generator: {
           filename: "./images/[name][ext]",
         },
+      },
+      { //---HTML
+        test: /\.pug$/,
+        use: [
+          { loader: "html-loader", },
+          {
+            loader: "pug-html-loader",
+            options: {
+              pretty: true,
+            }
+          },
+        ]
       },
     ],
   },
