@@ -23,15 +23,21 @@ module.exports = {
       filename: "access.html",
       inject: "body",
     }),
+    new HtmlWebpackPlugin({
+      template: "./src/templates/members/taro.pug",
+      filename: "members/taro.html",
+      inject: "body",
+    }),
     new CleanWebpackPlugin(),
   ],
   module: {
     rules: [
       { //--- Styles
-        test: /\.css$/,
+        test: /\.(css|sass|scss)$/,
         use: [
           { loader: MiniCssExtractPlugin.loader, },
           { loader: "css-loader", },
+          { loader: "sass-loader" },
         ],
       },
       { //--- Images
