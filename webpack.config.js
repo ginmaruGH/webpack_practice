@@ -10,13 +10,13 @@ module.exports = {
   entry: "./src/javascript/main.js",
   output: {
     path: path.resolve(__dirname, "./dist"),
-    filename: "./javascript/main.js",
+    filename: "./javascript/[name].[chunkhash].js",
     publicPath: "/",
   },
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: "./stylesheets/[name].css"
+      filename: "./stylesheets/[name].[chunkhash].css"
     }),
     new HtmlWebpackPlugin({
       template: "./src/templates/index.pug",
@@ -86,7 +86,7 @@ module.exports = {
         test: /\.(png|jpg|jpeg)$/,
         type: "asset/resource",
         generator: {
-          filename: "./images/[name][ext]",
+          filename: "./images/[contenthash][ext]",
         },
       },
       {
