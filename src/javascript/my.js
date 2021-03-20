@@ -2,5 +2,8 @@
 //   console.log("This is module.");
 // }
 export default () => {
-  console.log("This is module.");
+  const obj = { a: 1, b: 2 };
+  const newObj = { ...obj, c: 3 };
+  // { a:1, b: 2, c:3 }
+  console.log("This is module.", newObj);
 }

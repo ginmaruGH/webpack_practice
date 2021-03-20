@@ -2,14 +2,18 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 module.exports = {
+  mode: "development",
+  devtool: "source-map",
   entry: "./src/javascript/main.js",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "./javascript/main.js",
   },
   plugins: [
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: "./stylesheets/[name].css"
     }),
@@ -32,22 +36,61 @@ module.exports = {
   ],
   module: {
     rules: [
+      { //--- Vue
+        test: /\.vue$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: "vue-loader", },
+        ],
+      },
+      { //---Babel
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                [
+                  "@babel/preset-env",
+                  { "targets": "> 0.25%, not dead" },
+                ],
+                "@babel/preset-react",
+              ],
+            },
+          },
+        ],
+      },
       { //--- Styles
         test: /\.(css|sass|scss)$/,
         use: [
           { loader: MiniCssExtractPlugin.loader, },
-          { loader: "css-loader", },
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: false,
+            },
+          },
           { loader: "sass-loader" },
         ],
       },
       { //--- Images
-        test: /\.(png|jpg)$/,
+        test: /\.(png|jpg|jpeg)$/,
         type: "asset/resource",
         generator: {
           filename: "./images/[name][ext]",
         },
       },
-      { //---HTML
+      {
+        loader: "image-webpack-loader",
+        options: {
+          mozjpeg: {
+            progressive: true,
+            quality: 65,
+          },
+        },
+      },
+      { //---HTML/Pug
         test: /\.pug$/,
         use: [
           { loader: "html-loader", },
